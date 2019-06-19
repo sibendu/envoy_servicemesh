@@ -1,7 +1,7 @@
-
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -9,11 +9,33 @@ import (
 	"net/http"
 )
 
+// Article - Our struct for all articles
+type Author struct {
+    Id      string    `json:"Id"`
+    Name   string `json:"Name"`
+}
+
+// Article - Our struct for all articles
+type Article struct {
+    Id      string    `json:"Id"`
+    Title   string `json:"Title"`
+    Desc    string `json:"desc"`
+    Content string `json:"content"`
+}
+
+// Article - Our struct for all articles
+type Book struct {
+    Id        string    `json:"Id"`
+    Author    Author `json:"Author"`
+    Article   Article `json:"Article"`
+}
+
+
 func handler(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Fprintf(w, "Calling Service B <br>")
+	//fmt.Fprintf(w, "Calling Service B <br>")
 
-	req, err := http.NewRequest("GET", "http://localhost:8788/", nil)
+	req, err := http.NewRequest("GET", "http://localhost:8788/authors/1", nil)
 	if err != nil {
 		fmt.Printf("%s", err)
 	}
@@ -38,12 +60,16 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Printf("%s", err)
 	}
-	fmt.Fprintf(w, string(body))
-	fmt.Fprintf(w, "<br> Called service B <br>")
+	//fmt.Fprintf(w, string(body))
 
-	fmt.Fprintf(w, "Calling service C <br>")
+	var author Author 
+        json.Unmarshal(body, &author)
 
-	req, err = http.NewRequest("GET", "http://localhost:8791/", nil)
+	//fmt.Fprintf(w, "<br> Called service B <br>")
+
+	//fmt.Fprintf(w, "Calling service C <br>")
+
+	req, err = http.NewRequest("GET", "http://localhost:8791/articles/1", nil)
 	if err != nil {
 		fmt.Printf("%s", err)
 	}
@@ -69,8 +95,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("%s", err)
 	}
 
-	fmt.Fprintf(w, string(body))
-	fmt.Fprintf(w, "<br> Called service C <br>")
+	//fmt.Fprintf(w, string(body))
+
+        var article Article 
+        json.Unmarshal(body, &article)
+	
+	var book = Book{"1", author, article}
+	
+	//fmt.Fprintf(book)
+	//fmt.Fprintf(w, "<br> Called service C <br>")
+
+	json.NewEncoder(w).Encode(book)
+	
 }
 
 func main() {
