@@ -1,0 +1,33 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: frontenvoy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontenvoy
+    spec:
+      containers:
+      - name: frontenvoy
+        image: envoyproxy/envoy-dev:b8325ac4167284b4d566c2779c15ec3c8473dc66
+        ports:
+          - containerPort: 9901
+            protocol: TCP
+            name: envoy-admin
+          - containerPort: 80
+            protocol: TCP
+            name: envoy-web
+        volumeMounts:
+          - name: envoy-config-volume
+            mountPath: /etc/envoy-config/
+        command: ["/usr/local/bin/envoy"]
+        args: ["-c", "/etc/envoy-config/envoy-config-front.yaml", "--service-cluster","frontenvoy"]
+      volumes:
+        - name: envoy-config-volume
+          configMap:
+            name: sidecar-config
+            items:
+              - key: envoy-config-front.yaml
+                path: envoy-config-front.yaml

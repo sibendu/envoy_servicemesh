@@ -107,7 +107,7 @@ static_resources:
         hosts:
           -
             socket_address:
-              address: "service_a"
+              address: "servicea"
               port_value: 8081  
       -
         name: "service_b"
@@ -117,7 +117,7 @@ static_resources:
         hosts:
           -
             socket_address:
-              address: "service_b_envoy"
+              address: "serviceb"
               port_value: 8789
 
       -
@@ -128,5 +128,5 @@ static_resources:
         hosts:
           -
             socket_address:
-              address: "service_c_envoy"
+              address: "servicec"
               port_value: 8790

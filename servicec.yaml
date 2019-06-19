@@ -1,0 +1,52 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: servicec
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: servicec
+    spec:
+      containers:
+      - name: servicec
+        image: sibendudas/servicec
+        ports:
+        - containerPort: 8083
+          name: svc-port
+          protocol: TCP
+      - name: envoy
+        image: envoyproxy/envoy-dev:b8325ac4167284b4d566c2779c15ec3c8473dc66
+        ports:
+          - containerPort: 9901
+            protocol: TCP
+            name: envoy-admin
+          - containerPort: 8790
+            protocol: TCP
+            name: envoy-web
+        volumeMounts:
+          - name: envoy-config-volume
+            mountPath: /etc/envoy-config/
+        command: ["/usr/local/bin/envoy"]
+        args: ["-c", "/etc/envoy-config/envoy-config-c.yaml", "--service-cluster","servicec"]
+      volumes:
+        - name: envoy-config-volume
+          configMap:
+            name: sidecar-config
+            items:
+              - key: envoy-config-c.yaml
+                path: envoy-config-c.yaml
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: servicec
+spec:
+  clusterIP: None
+  ports:
+  - name: envoy-web
+    port: 8790
+    targetPort: 8790
+  selector:
+    app: servicec

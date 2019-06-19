@@ -1,0 +1,52 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: serviceb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: serviceb
+    spec:
+      containers:
+      - name: serviceb
+        image: sibendudas/serviceb
+        ports:
+        - containerPort: 8082
+          name: svc-port
+          protocol: TCP
+      - name: envoy
+        image: envoyproxy/envoy-dev:b8325ac4167284b4d566c2779c15ec3c8473dc66
+        ports:
+          - containerPort: 9901
+            protocol: TCP
+            name: envoy-admin
+          - containerPort: 8789
+            protocol: TCP
+            name: envoy-web
+        volumeMounts:
+          - name: envoy-config-volume
+            mountPath: /etc/envoy-config/
+        command: ["/usr/local/bin/envoy"]
+        args: ["-c", "/etc/envoy-config/envoy-config-b.yaml", "--service-cluster","serviceb"]
+      volumes:
+        - name: envoy-config-volume
+          configMap:
+            name: sidecar-config
+            items:
+              - key: envoy-config-b.yaml
+                path: envoy-config-b.yaml
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: serviceb
+spec:
+  clusterIP: None
+  ports:
+  - name: envoy-web
+    port: 8789
+    targetPort: 8789
+  selector:
+    app: serviceb

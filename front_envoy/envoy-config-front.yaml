@@ -46,6 +46,6 @@ static_resources:
       hosts:
         - 
           socket_address: 
-            address: "service_a_envoy"
+            address: "servicea"
             port_value: 8786
     
