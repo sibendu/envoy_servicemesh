@@ -30,6 +30,7 @@ Add prometheus scrape target for statsd-exporter :  localdbalancer-ip:9102
 (N.B. on OKE, there might be limit on LoadBalancer on the account)
 
 Import grafana_EnvoyServices.json 
+(This is generated through grafanalib using ./grafana/service-dashboard.py))
 
 3. Test:
 
