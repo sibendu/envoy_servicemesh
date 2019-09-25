@@ -19,3 +19,20 @@ spec:
           - containerPort: 9102
             protocol: TCP
             name: prom-out
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: statsd-exporter
+spec:
+  clusterIP: None
+  ports:
+  - name: statd-in
+    port: 9125
+    targetPort: 9125
+  - name: prom-out
+    port: 9102
+    targetPort: 9102
+  selector:
+    app: statsd-exporter
