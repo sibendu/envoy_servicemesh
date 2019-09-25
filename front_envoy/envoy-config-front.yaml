@@ -8,7 +8,7 @@ admin:
 stats_sinks:
   -
     name: "envoy.statsd"
-    config: 
+    config:  
       tcp_cluster_name: "statsd-exporter"
       prefix: front-envoy
 static_resources: 
