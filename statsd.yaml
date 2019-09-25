@@ -15,7 +15,7 @@ spec:
         ports:
           - containerPort: 9125
             protocol: TCP
-            name: statd-in
+            name: statsd-in
           - containerPort: 9102
             protocol: TCP
             name: prom-out
@@ -26,9 +26,9 @@ apiVersion: v1
 metadata:
   name: statsd-exporter
 spec:
-  clusterIP: None
+  type: LoadBalancer
   ports:
-  - name: statd-in
+  - name: statsd-in
     port: 9125
     targetPort: 9125
   - name: prom-out
