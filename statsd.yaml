@@ -8,7 +8,7 @@ spec:
     metadata:
       labels:
         app: statsd-exporter
-    spec:
+    spec: 
       containers:
       - name: statsd-exporter
         image: prom/statsd-exporter:latest
