@@ -138,13 +138,13 @@ static_resources:
               port_value: 8790
 
 
-    -
-      name: "statsd-exporter"
-      connect_timeout: "0.25s"
-      type: "strict_dns"
-      lb_policy: "ROUND_ROBIN"
-      hosts:
-        -
-          socket_address:
-            address: "statsd-exporter"
-            port_value: 9125
+      -
+        name: "statsd-exporter"
+        connect_timeout: "0.25s"
+        type: "strict_dns"
+        lb_policy: "ROUND_ROBIN"
+        hosts:
+          -
+            socket_address:
+              address: "statsd-exporter"
+              port_value: 9125
