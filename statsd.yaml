@@ -1,0 +1,21 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: statsd-exporter
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: statsd-exporter
+    spec:
+      containers:
+      - name: statsd-exporter
+        image: prom/statsd-exporter:latest
+        ports:
+          - containerPort: 9125
+            protocol: TCP
+            name: statd-in
+          - containerPort: 9102
+            protocol: TCP
+            name: prom-out
