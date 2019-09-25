@@ -28,6 +28,6 @@ spec:
         - name: envoy-config-volume
           configMap:
             name: sidecar-config
-            items:
+            items: 
               - key: envoy-config-front.yaml
                 path: envoy-config-front.yaml

@@ -28,7 +28,7 @@ spec:
         volumeMounts:
           - name: envoy-config-volume
             mountPath: /etc/envoy-config/
-        command: ["/usr/local/bin/envoy"]
+        command: ["/usr/local/bin/envoy"] 
         args: ["-c", "/etc/envoy-config/envoy-config-c.yaml", "--service-cluster","servicec","--service-node","servicec"]
       volumes:
         - name: envoy-config-volume
