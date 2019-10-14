@@ -1,5 +1,5 @@
 ## Serice Mesh with Envoy
-![setup](https://github.com/sibendu/envoy_servicemesh/blob/master/envoy_servicemesh.jpg)
+![setup](https://github.com/sibendu/envoy_servicemesh/blob/master/envoy_servicemesh.jpg) 
 
 
 ### Run:  
